@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    >
+
+
+    <!-- I wanted to make the description and checkbox on the same line so i added a new horizontal Linear Layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:buttonTint="#ADD8E6"
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To do description"
+            android:textSize="20dp"
+            tools:text="description" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:id="@+id/type"
+        android:layout_width="163dp"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="category"/>
+
+    <TextView
+        android:id="@+id/dueDate"
+        android:layout_width="401dp"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:text="06-04-2017"/>
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#C0C0C0"
+        />
+
+</LinearLayout>
