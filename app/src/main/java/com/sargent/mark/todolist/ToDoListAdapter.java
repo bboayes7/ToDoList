@@ -23,6 +23,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
     private Cursor cursor;
     private ItemClickListener listener;
     private String TAG = "todolistadapter";
+    private CheckBox checkBox;
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -94,8 +95,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
             description = cursor.getString(cursor.getColumnIndex(Contract.TABLE_TODO.COLUMN_NAME_DESCRIPTION));
             category = cursor.getString(cursor.getColumnIndex(Contract.TABLE_TODO.COLUMN_NAME_CATEGORY));
 
-
-
             descr.setText(description);
             due.setText("Due: " + duedate);
             cat.setText("Type: " + category);
@@ -104,6 +103,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
 
         @Override
         public void onClick(View v) {
+            //need to find who the culprit is for this nullpointer exception
+            Log.d(TAG, "CLICKCLICKCLICK");
             int pos = getAdapterPosition();
             listener.onItemClick(pos, description, duedate, id, category, done);
         }

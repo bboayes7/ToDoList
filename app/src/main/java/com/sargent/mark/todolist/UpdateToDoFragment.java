@@ -60,7 +60,7 @@ public class UpdateToDoFragment extends DialogFragment {
 
         //Add spinner and fill it with categories
         category = (Spinner) view.findViewById(R.id.category);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.initial_categories, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.choose_categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category.setAdapter(adapter);
 
@@ -79,7 +79,7 @@ public class UpdateToDoFragment extends DialogFragment {
             public void onClick(View v) {
                 UpdateToDoFragment.OnUpdateDialogCloseListener activity = (UpdateToDoFragment.OnUpdateDialogCloseListener) getActivity();
                 Log.d(TAG, "id: " + id);
-                activity.closeUpdateDialog(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), toDo.getText().toString(), id, category.toString(), 0);
+                activity.closeUpdateDialog(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), toDo.getText().toString(), id, category.getSelectedItem().toString(), 0);
                 UpdateToDoFragment.this.dismiss();
             }
         });

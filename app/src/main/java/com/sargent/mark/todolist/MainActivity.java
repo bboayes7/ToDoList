@@ -12,6 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -75,7 +77,9 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
 
                 FragmentManager fm = getSupportFragmentManager();
 
-                UpdateToDoFragment frag = UpdateToDoFragment.newInstance(year, month, day, description, id, category, done);
+                //had null pointer exception errors when trying to call this because the done parameter was null so i'm hard coding 0 into it
+                //noone add's a task that's done to a to do list they're making. who does that? only weirdo's do.
+                UpdateToDoFragment frag = UpdateToDoFragment.newInstance(year, month, day, description, id, category, 0);
                 frag.show(fm, "updatetodofragment");
             }
         });
@@ -110,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
         return String.format("%04d-%02d-%02d", year, month + 1, day);
     }
 
-
-
     private Cursor getAllItems(SQLiteDatabase db) {
         return db.query(
                 Contract.TABLE_TODO.TABLE_NAME,
@@ -139,9 +141,6 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
         return db.delete(Contract.TABLE_TODO.TABLE_NAME, Contract.TABLE_TODO._ID + "=" + id, null) > 0;
     }
 
-
-
-
     private int updateToDo(SQLiteDatabase db, int year, int month, int day, String description, long id, String category, Integer done){
 
         String duedate = formatDate(year, month - 1, day);
@@ -160,6 +159,50 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
         updateToDo(db, year, month, day, description, id, category, done);
         adapter.swapCursor(getAllItems(db));
     }
+
+    //it's menu time
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.categories, menu);
+        return true;
+    }
+
+    //create a cursor that query's for all items with a certain category
+    private Cursor getCategoriedItems(SQLiteDatabase db, String categorySelected){
+
+        return db.query(Contract.TABLE_TODO.TABLE_NAME,
+                null,
+                "category = '" + categorySelected + "'",
+                null,
+                null,
+                null,
+                Contract.TABLE_TODO.COLUMN_NAME_DUE_DATE
+        );
+    }
+
+    //when a category is selected view that category on the to do list
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemThatWasSelected = item.getItemId();
+        if(menuItemThatWasSelected == R.id.category_all){
+            adapter.swapCursor(getAllItems(db));
+        }
+        if(menuItemThatWasSelected == R.id.category_groceries){
+            adapter.swapCursor(getCategoriedItems(db, "Groceries"));
+        }
+        if(menuItemThatWasSelected == R.id.category_school){
+            adapter.swapCursor(getCategoriedItems(db, "School"));
+        }
+        if(menuItemThatWasSelected == R.id.category_work){
+            adapter.swapCursor(getCategoriedItems(db, "Work"));
+        }
+        if(menuItemThatWasSelected == R.id.category_etc){
+            adapter.swapCursor(getCategoriedItems(db, "Etc"));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 }

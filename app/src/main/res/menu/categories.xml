@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="All"
+        android:id="@+id/category_all"
+        android:orderInCategory="1"
+        app:showAsAction="collapseActionView"
+        />
+    <item
+        android:title="Groceries"
+        android:id="@+id/category_groceries"
+        android:orderInCategory="2"
+        app:showAsAction="collapseActionView"
+        />
+    <item
+        android:title="School"
+        android:id="@+id/category_school"
+        android:orderInCategory="3"
+        app:showAsAction="collapseActionView"
+        />
+    <item
+        android:title="Work"
+        android:id="@+id/category_work"
+        android:orderInCategory="4"
+        app:showAsAction="collapseActionView"
+        />
+    <item
+        android:title="Etc"
+        android:id="@+id/category_etc"
+        android:orderInCategory="5"
+        app:showAsAction="collapseActionView"
+        />
+
+</menu>
