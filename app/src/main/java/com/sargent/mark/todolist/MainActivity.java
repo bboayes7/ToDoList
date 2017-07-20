@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
     private SQLiteDatabase db;
     ToDoListAdapter adapter;
     private final String TAG = "mainactivity";
-    private CheckBox checkBox;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +81,14 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
                 //noone add's a task that's done to a to do list they're making. who does that? only weirdo's do.
                 UpdateToDoFragment frag = UpdateToDoFragment.newInstance(year, month, day, description, id, category, 0);
                 frag.show(fm, "updatetodofragment");
+            }
+
+            //
+
+
+            @Override
+            public void checkBoxClicked(long id, Integer done) {
+                updateDone(id, done);
             }
         });
 
@@ -180,6 +188,18 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
         );
     }
 
+    //test to see if done items appear
+    private Cursor getCompleted(SQLiteDatabase db, Integer doneNumber){
+        return db.query(Contract.TABLE_TODO.TABLE_NAME,
+                null,
+                "done = " + doneNumber,
+                null,
+                null,
+                null,
+                Contract.TABLE_TODO.COLUMN_NAME_DUE_DATE
+        );
+    }
+
     //when a category is selected view that category on the to do list
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -199,8 +219,23 @@ public class MainActivity extends AppCompatActivity implements AddToDoFragment.O
         if(menuItemThatWasSelected == R.id.category_etc){
             adapter.swapCursor(getCategoriedItems(db, "Etc"));
         }
+        if(menuItemThatWasSelected == R.id.category_done){
+            adapter.swapCursor(getCompleted(db, 1));
+        }
+        if(menuItemThatWasSelected == R.id.category_not_done){
+            adapter.swapCursor(getCompleted(db, 0));
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //update done to database
+    private int updateDone(long id, Integer done){
+
+        ContentValues cv = new ContentValues();
+        cv.put(Contract.TABLE_TODO.COLUMN_NAME_DONE, done);
+
+        return db.update(Contract.TABLE_TODO.TABLE_NAME, cv, Contract.TABLE_TODO._ID + "=" + id, null);
     }
 
 

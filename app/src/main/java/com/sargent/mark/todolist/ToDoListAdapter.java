@@ -23,7 +23,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
     private Cursor cursor;
     private ItemClickListener listener;
     private String TAG = "todolistadapter";
-    private CheckBox checkBox;
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,6 +47,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
 
     public interface ItemClickListener {
         void onItemClick(int pos, String description, String duedate, long id, String category, Integer done);
+        void checkBoxClicked(long id, Integer done);
     }
 
     public ToDoListAdapter(Cursor cursor, ItemClickListener listener) {
@@ -70,8 +70,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
         TextView cat;
         String duedate;
         String description;
+        //adding the extra columns
         String category;
-        Integer done;
+        Integer done = 0;
+        //need a way to update the database with the checkbox
+        CheckBox checkBox;
 
 
         long id;
@@ -82,7 +85,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
             descr = (TextView) view.findViewById(R.id.description);
             due = (TextView) view.findViewById(R.id.dueDate);
             cat = (TextView) view.findViewById(R.id.type);
-
+            checkBox = (CheckBox) view.findViewById(R.id.checkBox);
             view.setOnClickListener(this);
         }
 
@@ -94,6 +97,21 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ItemHo
             duedate = cursor.getString(cursor.getColumnIndex(Contract.TABLE_TODO.COLUMN_NAME_DUE_DATE));
             description = cursor.getString(cursor.getColumnIndex(Contract.TABLE_TODO.COLUMN_NAME_DESCRIPTION));
             category = cursor.getString(cursor.getColumnIndex(Contract.TABLE_TODO.COLUMN_NAME_CATEGORY));
+
+            //create a listener for the checkbox
+            checkBox.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    //set done to 1 or 0 if its checked or not and pass into the item listener
+                    if(checkBox.isChecked()){
+                        done = 1 ;
+                    } else {
+                        done = 0;
+                    }
+                    listener.checkBoxClicked(id, done);
+                }
+            });
+
 
             descr.setText(description);
             due.setText("Due: " + duedate);

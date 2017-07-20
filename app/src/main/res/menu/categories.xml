@@ -32,5 +32,17 @@
         android:orderInCategory="5"
         app:showAsAction="collapseActionView"
         />
+    <item
+        android:title="Done"
+        android:id="@+id/category_done"
+        android:orderInCategory="6"
+        app:showAsAction="collapseActionView"
+        />
+    <item
+        android:title="Not Done"
+        android:id="@+id/category_not_done"
+        android:orderInCategory="7"
+        app:showAsAction="collapseActionView"
+        />
 
 </menu>
